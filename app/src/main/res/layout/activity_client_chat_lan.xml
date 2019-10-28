@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context=".Screens.ClientChat">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_weight=".05"
+          android:orientation="horizontal"
+          android:weightSum="1">
+          <TextView
+              android:id="@+id/Username"
+              android:layout_width="0dp"
+              android:layout_weight=".9"
+              android:layout_height="match_parent"
+              android:text="Client Layout "
+              android:textAlignment="center"
+              android:textSize="25sp"
+              android:textStyle="bold"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent" />
+          <Button
+              android:layout_width="0dp"
+              android:layout_weight=".1"
+              android:layout_height="match_parent"
+              android:background="@drawable/disconnect_icon"
+              android:id="@+id/btn_disconnected"/>
+      </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/edt_IPaddress"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".05"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="Enter IP Address Here"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".8"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
+        <TextView
+            android:id="@+id/edt_MessageBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Message will be here!"
+            app:layout_constraintTop_toBottomOf="@+id/edt_IPaddress" />
+
+    </ScrollView>
+
+
+
+        <LinearLayout
+            android:id="@+id/chatsend_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".1"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            app:layout_constraintBottom_toTopOf="@+id/edt_MessageBox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/edt_MessageBox"
+            app:layout_constraintTop_toBottomOf="@+id/edt_MessageBox"
+            app:layout_constraintVertical_bias="0.0">
+
+            <EditText
+                android:id="@+id/edt_Message"
+                android:layout_width="0dp"
+                android:layout_weight=".9"
+                android:layout_height="match_parent"
+                android:hint="message here.." />
+
+            <ImageView
+                android:id="@+id/send_img"
+                android:layout_width="0dp"
+                android:layout_weight=".1"
+                android:layout_height="match_parent"
+                android:padding="3dp"
+                android:src="@drawable/send_icon" />
+        </LinearLayout>
+
+</LinearLayout>
