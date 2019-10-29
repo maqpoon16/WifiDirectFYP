@@ -1,6 +1,12 @@
 package info.devexchanges.chatbubble.Screens;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,12 +18,14 @@ import info.devexchanges.chatbubble.Data.GlobalVariables;
 import info.devexchanges.chatbubble.R;
 
 public class EnterUserNameActivity extends AppCompatActivity {
-        private EditText username;
+    private static final int MY_PERMISSIONS_REQUEST = 1;
+    private EditText username;
         private Button btn_saveusername;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.enter_username_layout);
+        CheckPermission();
         InitializeVariables();
 
         btn_saveusername.setOnClickListener(new View.OnClickListener() {
@@ -45,5 +53,47 @@ public class EnterUserNameActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void CheckPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if (ContextCompat.checkSelfPermission(EnterUserNameActivity.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(EnterUserNameActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST);
+            }
+
+            if (ContextCompat.checkSelfPermission(EnterUserNameActivity.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(EnterUserNameActivity.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST);
+            }
+            if (ContextCompat.checkSelfPermission(EnterUserNameActivity.this,
+                    Manifest.permission.ACCESS_WIFI_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(EnterUserNameActivity.this,
+                        new String[]{Manifest.permission.ACCESS_WIFI_STATE},
+                        MY_PERMISSIONS_REQUEST);
+            }
+            if (ContextCompat.checkSelfPermission(EnterUserNameActivity.this,
+                    Manifest.permission.CHANGE_WIFI_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(EnterUserNameActivity.this,
+                        new String[]{Manifest.permission.CHANGE_WIFI_STATE},
+                        MY_PERMISSIONS_REQUEST);
+            }
+            if (ContextCompat.checkSelfPermission(EnterUserNameActivity.this,
+                    Manifest.permission.CHANGE_NETWORK_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(EnterUserNameActivity.this,
+                        new String[]{Manifest.permission.CHANGE_NETWORK_STATE},
+                        MY_PERMISSIONS_REQUEST);
+            }
+        }
     }
 }

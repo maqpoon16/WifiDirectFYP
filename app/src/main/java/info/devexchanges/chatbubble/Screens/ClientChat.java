@@ -2,10 +2,13 @@ package info.devexchanges.chatbubble.Screens;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
@@ -20,9 +23,13 @@ import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 
+import info.devexchanges.chatbubble.Adapters.ChatAdapters;
+import info.devexchanges.chatbubble.Data.ChatModel;
 import info.devexchanges.chatbubble.Data.GlobalVariables;
 import info.devexchanges.chatbubble.Data.TempData;
 import info.devexchanges.chatbubble.Implementers.DiscoveryPresenterImplementer;
@@ -47,6 +54,11 @@ private Button btn_disconnected;
 //To disconnect user
     private DiscoveryPresenter discoveryPresenter;
 
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private List<ChatModel> mDataset;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,12 +72,17 @@ private Button btn_disconnected;
         discoveryPresenter = new DiscoveryPresenterImplementer(this, ClientChat.this);
         UserName = (TextView) findViewById(R.id.Username);
         UserName.setText("Client :"+GlobalVariables.Username);
-
+        mDataset = new ArrayList<>();
         send_img = (ImageView) findViewById(R.id.send_img);
         edt_IPaddress = (TextView) findViewById(R.id.edt_IPaddress);
         edt_IPaddress.setText(ServerIp);
         edt_Message = (EditText) findViewById(R.id.edt_Message);
         edt_MessageBox=(TextView)findViewById(R.id.edt_MessageBox);
+        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+         recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+         recyclerView.setLayoutManager(layoutManager);
+
         btn_disconnected = (Button) findViewById(R.id.btn_disconnected);
         btn_disconnected.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +132,8 @@ private Button btn_disconnected;
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        edt_MessageBox.append(Messages);
+                        setchatAdapter(Messages,null);
+//                        edt_MessageBox.append(Messages);
                     }
                 });
 
@@ -124,7 +142,8 @@ private Button btn_disconnected;
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        edt_MessageBox.append(Messages);
+                        setchatAdapter(Messages,null);
+//                        edt_MessageBox.append(Messages);
                     }
                 });
             }
@@ -159,6 +178,13 @@ private Button btn_disconnected;
     public void FailedToDisconnect(String DeviceName) {
         Toast.makeText(ClientChat.this, DeviceName, Toast.LENGTH_SHORT).show();
 
+    }
+
+    public void setchatAdapter(String Message, Bitmap Media){
+        mDataset.add(new ChatModel(Message,Media));
+        mAdapter = new ChatAdapters(ClientChat.this,mDataset);
+        mAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(mAdapter);
     }
 
     //Not used

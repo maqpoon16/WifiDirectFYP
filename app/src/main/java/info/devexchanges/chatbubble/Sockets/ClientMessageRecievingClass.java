@@ -1,9 +1,12 @@
 package info.devexchanges.chatbubble.Sockets;
+import android.graphics.Bitmap;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import info.devexchanges.chatbubble.Data.GlobalVariables;
 import info.devexchanges.chatbubble.Screens.ClientChat;
 
 public class ClientMessageRecievingClass extends Thread {
@@ -19,18 +22,26 @@ public class ClientMessageRecievingClass extends Thread {
         Socket socket;
         DataInputStream dataInputStream;
         String messages;
+        Bitmap Mediashared;
         @Override
         public void run() {
             try {
+                messages = null;
+                Mediashared = null;
                 serverSocket = new ServerSocket(8081);
                 while (true) {
                     socket = serverSocket.accept();
                     dataInputStream = new DataInputStream(socket.getInputStream());
                     messages = dataInputStream.readUTF();
-                    activity.runOnUiThread(new Runnable() {
+                    if(messages!=null && messages.contains(GlobalVariables.MediaIndicator)){
+                        Mediashared = GlobalVariables.decodeBase64(messages.split(GlobalVariables.MediaIndicator)[1]);
+                        messages = messages.split(GlobalVariables.MediaIndicator)[0]+":\n";
+                    }
+                   activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            activity.edt_MessageBox.append("\n"+messages);
+                            activity.setchatAdapter(messages,Mediashared);
+                            //activity.edt_MessageBox.append("\n"+messages);
                         }
                     });
 
@@ -40,12 +51,14 @@ public class ClientMessageRecievingClass extends Thread {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        activity.edt_MessageBox.append(messages);
+                        activity.setchatAdapter(messages,null);
+                        //activity.edt_MessageBox.append(messages);
                     }
                 });
             }
 
         }
     }
+
 
 }
